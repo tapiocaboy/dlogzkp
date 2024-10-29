@@ -13,7 +13,7 @@ mod hash_points_tests {
             ProjectivePoint::GENERATOR * Scalar::ONE,
         ];
         let hash = DLogProof::hash_points(sid, pid, &points);
-        assert!(hash != Scalar::ZERO, "Hash should not be zero");
+        assert_ne!(hash, Scalar::ZERO, "Hash should not be zero");
     }
 
     #[test]
@@ -22,7 +22,7 @@ mod hash_points_tests {
         let points = vec![ProjectivePoint::GENERATOR];
         let hash1 = DLogProof::hash_points("session1", pid, &points);
         let hash2 = DLogProof::hash_points("session2", pid, &points);
-        assert!(hash1 != hash2, "Different session IDs should produce different hashes");
+        assert_ne!(hash1, hash2, "Different session IDs should produce different hashes");
     }
 
     #[test]
@@ -31,7 +31,7 @@ mod hash_points_tests {
         let points = vec![ProjectivePoint::GENERATOR];
         let hash1 = DLogProof::hash_points(sid, 1, &points);
         let hash2 = DLogProof::hash_points(sid, 2, &points);
-        assert!(hash1 != hash2, "Different PIDs should produce different hashes");
+        assert_ne!(hash1, hash2, "Different PIDs should produce different hashes");
     }
 
     #[test]
@@ -40,7 +40,7 @@ mod hash_points_tests {
         let pid = 1;
         let points = vec![];
         let hash = DLogProof::hash_points(sid, pid, &points);
-        assert!(hash != Scalar::ZERO, "Hash of empty points list should not be zero");
+        assert_ne!(hash, Scalar::ZERO, "Hash of empty points list should not be zero");
     }
 }
 
@@ -114,7 +114,7 @@ mod prove_verify_tests {
         let proof1 = DLogProof::prove(sid, pid, &x, &y, &base_point);
         let proof2 = DLogProof::prove(sid, pid, &x, &y, &base_point);
 
-        assert!(proof1 != proof2, "Different proofs for same secret should be different");
+        assert_ne!(proof1, proof2, "Different proofs for same secret should be different");
         assert!(proof1.verify(sid, pid, &y, &base_point), "First proof should verify");
         assert!(proof2.verify(sid, pid, &y, &base_point), "Second proof should verify");
     }
@@ -133,8 +133,7 @@ mod random_scalar_tests {
         // Check that all generated scalars are different
         for i in 0..scalars.len() {
             for j in (i + 1)..scalars.len() {
-                assert!(scalars[i] != scalars[j], 
-                    "Generated scalars should be unique");
+                assert_ne!(scalars[i], scalars[j], "Generated scalars should be unique");
             }
         }
     }
@@ -143,7 +142,7 @@ mod random_scalar_tests {
     fn test_random_scalar_range() {
         for _ in 0..100 {
             let scalar = generate_random_scalar();
-            assert!(scalar != Scalar::ZERO, "Random scalar should not be zero");
+            assert_ne!(scalar, Scalar::ZERO, "Random scalar should not be zero");
         }
     }
 }
