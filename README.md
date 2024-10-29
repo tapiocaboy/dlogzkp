@@ -1,5 +1,7 @@
 # Schnorr Zero-Knowledge DLOG Proof
 
+[![Rust CI](https://github.com/<username>/<repository>/actions/workflows/rust.yml/badge.svg)](https://github.com/<username>/<repository>/actions/workflows/rust.yml)
+
 A Rust implementation of the Non-interactive Schnorr Zero-Knowledge Discrete Logarithm (DLOG) Proof scheme with a Fiat-Shamir transformation.
 
 ## Overview
@@ -106,10 +108,3 @@ The implementation uses the `log` crate with `env_logger` for configurable loggi
 
 This implementation is for educational purposes. While it implements the core cryptographic operations correctly, it has not been audited for production use.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-[Add contribution guidelines here]
