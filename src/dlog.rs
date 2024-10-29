@@ -61,7 +61,7 @@ impl DiscreteLogProof for DLogProof {
     fn hash_points(sid: &str, pid: u32, points: &[ProjectivePoint]) -> Result<Scalar, Error> {
         let mut hasher = Sha256::new();
         hasher.update(sid.as_bytes());
-        hasher.update(&pid.to_be_bytes());
+        hasher.update(pid.to_be_bytes());
 
         for point in points {
             let encoded = point.to_affine().to_encoded_point(false);
@@ -69,7 +69,7 @@ impl DiscreteLogProof for DLogProof {
         }
 
         let digest = hasher.finalize();
-        Scalar::from_repr(digest.into())
+        Scalar::from_repr(digest)
             .into_option()
             .ok_or_else(|| Error::new(std::io::ErrorKind::InvalidData, "Invalid scalar value"))
     }
