@@ -1,8 +1,11 @@
 [package]
 name = "schnorr_zk_dlog"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 license = "MIT"
+authors = ["Gayan Mannapperuma kalanamith@gmail.com"]
+description = "A Rust implementation of the Non-interactive Schnorr ZK DLOG Proof scheme"
+repository = "https://github.com/tapiocaboy/zkp"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

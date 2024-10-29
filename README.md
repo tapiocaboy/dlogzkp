@@ -1,8 +1,27 @@
 # Schnorr Zero-Knowledge DLOG Proof
 
-[![Rust CI](https://github.com/<username>/<repository>/actions/workflows/rust.yml/badge.svg)](https://github.com/<username>/<repository>/actions/workflows/rust.yml)
+[![Rust CI](https://github.com/<username>/schnorr_zk_dlog/actions/workflows/rust.yml/badge.svg)](https://github.com/<username>/schnorr_zk_dlog/actions/workflows/rust.yml)
+![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Rust implementation of the Non-interactive Schnorr Zero-Knowledge Discrete Logarithm (DLOG) Proof scheme with a Fiat-Shamir transformation.
+
+## Version
+
+Current version: 0.2.0
+
+### Changelog
+
+#### v0.2.0
+- Added comprehensive test suite
+- Implemented logging with env_logger
+- Added GitHub Actions CI/CD pipeline
+- Added code coverage reporting
+
+#### v0.1.0
+- Initial implementation of Schnorr ZK DLOG Proof
+- Basic proof generation and verification
+- Fiat-Shamir transformation
 
 ## Overview
 
