@@ -22,7 +22,10 @@ mod hash_points_tests {
         let points = vec![ProjectivePoint::GENERATOR];
         let hash1 = DLogProof::hash_points("session1", pid, &points);
         let hash2 = DLogProof::hash_points("session2", pid, &points);
-        assert_ne!(hash1, hash2, "Different session IDs should produce different hashes");
+        assert_ne!(
+            hash1, hash2,
+            "Different session IDs should produce different hashes"
+        );
     }
 
     #[test]
@@ -31,7 +34,10 @@ mod hash_points_tests {
         let points = vec![ProjectivePoint::GENERATOR];
         let hash1 = DLogProof::hash_points(sid, 1, &points);
         let hash2 = DLogProof::hash_points(sid, 2, &points);
-        assert_ne!(hash1, hash2, "Different PIDs should produce different hashes");
+        assert_ne!(
+            hash1, hash2,
+            "Different PIDs should produce different hashes"
+        );
     }
 
     #[test]
@@ -40,7 +46,11 @@ mod hash_points_tests {
         let pid = 1;
         let points = vec![];
         let hash = DLogProof::hash_points(sid, pid, &points);
-        assert_ne!(hash, Scalar::ZERO, "Hash of empty points list should not be zero");
+        assert_ne!(
+            hash,
+            Scalar::ZERO,
+            "Hash of empty points list should not be zero"
+        );
     }
 }
 
@@ -56,7 +66,10 @@ mod prove_verify_tests {
         let y = base_point * x;
 
         let proof = DLogProof::prove(sid, pid, &x, &y, &base_point);
-        assert!(proof.verify(sid, pid, &y, &base_point), "Valid proof should verify");
+        assert!(
+            proof.verify(sid, pid, &y, &base_point),
+            "Valid proof should verify"
+        );
     }
 
     #[test]
@@ -69,8 +82,10 @@ mod prove_verify_tests {
         let y = base_point * x;
 
         let proof = DLogProof::prove(sid, pid, &x, &y, &base_point);
-        assert!(!proof.verify(wrong_sid, pid, &y, &base_point), 
-            "Proof should not verify with wrong session ID");
+        assert!(
+            !proof.verify(wrong_sid, pid, &y, &base_point),
+            "Proof should not verify with wrong session ID"
+        );
     }
 
     #[test]
@@ -83,8 +98,10 @@ mod prove_verify_tests {
         let y = base_point * x;
 
         let proof = DLogProof::prove(sid, pid, &x, &y, &base_point);
-        assert!(!proof.verify(sid, wrong_pid, &y, &base_point), 
-            "Proof should not verify with wrong PID");
+        assert!(
+            !proof.verify(sid, wrong_pid, &y, &base_point),
+            "Proof should not verify with wrong PID"
+        );
     }
 
     #[test]
@@ -94,13 +111,15 @@ mod prove_verify_tests {
         let x = Scalar::random(&mut OsRng);
         let base_point = ProjectivePoint::GENERATOR;
         let y = base_point * x;
-        
+
         // Create wrong public key by using different scalar
         let wrong_y = base_point * (x + Scalar::ONE);
 
         let proof = DLogProof::prove(sid, pid, &x, &y, &base_point);
-        assert!(!proof.verify(sid, pid, &wrong_y, &base_point), 
-            "Proof should not verify with wrong public key");
+        assert!(
+            !proof.verify(sid, pid, &wrong_y, &base_point),
+            "Proof should not verify with wrong public key"
+        );
     }
 
     #[test]
@@ -114,9 +133,18 @@ mod prove_verify_tests {
         let proof1 = DLogProof::prove(sid, pid, &x, &y, &base_point);
         let proof2 = DLogProof::prove(sid, pid, &x, &y, &base_point);
 
-        assert_ne!(proof1, proof2, "Different proofs for same secret should be different");
-        assert!(proof1.verify(sid, pid, &y, &base_point), "First proof should verify");
-        assert!(proof2.verify(sid, pid, &y, &base_point), "Second proof should verify");
+        assert_ne!(
+            proof1, proof2,
+            "Different proofs for same secret should be different"
+        );
+        assert!(
+            proof1.verify(sid, pid, &y, &base_point),
+            "First proof should verify"
+        );
+        assert!(
+            proof2.verify(sid, pid, &y, &base_point),
+            "Second proof should verify"
+        );
     }
 }
 
@@ -158,16 +186,28 @@ fn test_proof_tamper_resistance() {
     let proof = DLogProof::prove(sid, pid, &x, &y, &base_point);
 
     let test_scalar = Scalar::ONE.add(&Scalar::ONE);
-    
+
     // Test different tampering scenarios
     let tampered_proofs = vec![
-        DLogProof { t: proof.t, s: proof.s + Scalar::ONE },
-        DLogProof { t: proof.t * test_scalar, s: proof.s },
-        DLogProof { t: proof.t + base_point, s: proof.s },
+        DLogProof {
+            t: proof.t,
+            s: proof.s + Scalar::ONE,
+        },
+        DLogProof {
+            t: proof.t * test_scalar,
+            s: proof.s,
+        },
+        DLogProof {
+            t: proof.t + base_point,
+            s: proof.s,
+        },
     ];
 
     for (i, tampered_proof) in tampered_proofs.iter().enumerate() {
-        assert!(!tampered_proof.verify(sid, pid, &y, &base_point), 
-            "Tampered proof {} should not verify", i);
+        assert!(
+            !tampered_proof.verify(sid, pid, &y, &base_point),
+            "Tampered proof {} should not verify",
+            i
+        );
     }
 }

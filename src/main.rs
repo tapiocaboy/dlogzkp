@@ -1,11 +1,11 @@
+use env_logger::Env;
 use k256::{
     elliptic_curve::{sec1::ToEncodedPoint, Field, PrimeField},
     ProjectivePoint, Scalar,
 };
-use rand_core::OsRng;
-use sha2::{Sha256, Digest};
-use env_logger::Env;
 use log::info;
+use rand_core::OsRng;
+use sha2::{Digest, Sha256};
 
 #[cfg(test)]
 mod tests;
@@ -43,13 +43,13 @@ impl DLogProof {
     fn hash_points(sid: &str, pid: u32, points: &[ProjectivePoint]) -> Scalar {
         let mut hasher = Sha256::new();
         hasher.update(sid.as_bytes());
-        hasher.update(&pid.to_be_bytes());
+        hasher.update(pid.to_be_bytes());
         for point in points {
             let encoded = point.to_affine().to_encoded_point(false);
             hasher.update(encoded.as_bytes());
         }
         let digest = hasher.finalize();
-        Scalar::from_repr(digest.into()).unwrap()
+        Scalar::from_repr(digest).unwrap()
     }
 
     /// Generates a DLOG proof.
@@ -75,7 +75,13 @@ impl DLogProof {
     /// let y = ProjectivePoint::GENERATOR * x;
     /// let proof = DLogProof::prove(sid, pid, &x, &y, &ProjectivePoint::GENERATOR);
     /// ```
-    fn prove(sid: &str, pid: u32, x: &Scalar, y: &ProjectivePoint, base_point: &ProjectivePoint) -> Self {
+    fn prove(
+        sid: &str,
+        pid: u32,
+        x: &Scalar,
+        y: &ProjectivePoint,
+        base_point: &ProjectivePoint,
+    ) -> Self {
         let r = Scalar::random(&mut OsRng);
         let t = base_point * &r;
         let c = Self::hash_points(sid, pid, &[*base_point, *y, t]);
@@ -107,7 +113,13 @@ impl DLogProof {
     /// let is_valid = proof.verify(sid, pid, &y, &ProjectivePoint::GENERATOR);
     /// assert!(is_valid);
     /// ```
-    fn verify(&self, sid: &str, pid: u32, y: &ProjectivePoint, base_point: &ProjectivePoint) -> bool {
+    fn verify(
+        &self,
+        sid: &str,
+        pid: u32,
+        y: &ProjectivePoint,
+        base_point: &ProjectivePoint,
+    ) -> bool {
         let c = Self::hash_points(sid, pid, &[*base_point, *y, self.t]);
         let lhs = base_point * &self.s;
         let rhs = self.t + y * &c;
