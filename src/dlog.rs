@@ -57,6 +57,7 @@ impl DiscreteLogProof for DLogProof {
     /// let pid = 1;
     /// let points = vec![];
     /// let hash = DLogProof::hash_points(sid, pid, &points).expect("Hash computation failed");
+    /// assert_eq!(hash.is_zero().unwrap_u8(), 0);
     /// ```
     fn hash_points(sid: &str, pid: u32, points: &[ProjectivePoint]) -> Result<Scalar, Error> {
         let mut hasher = Sha256::new();
@@ -95,6 +96,7 @@ impl DiscreteLogProof for DLogProof {
     /// let base_point = ProjectivePoint::GENERATOR;
     /// let y = base_point * x;
     /// let proof = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
+    /// assert_ne!(proof.t, ProjectivePoint::identity(),"Commitment value should not be identity");
     /// ```
     fn prove(
         sid: &str,
@@ -165,6 +167,7 @@ impl DLogProof {
     /// let t = ProjectivePoint::random(&mut OsRng);
     /// let s = Scalar::random(&mut OsRng);
     /// let proof = DLogProof::new(t, s);
+    /// assert_eq!(proof.t, t);
     /// ```
     pub fn new(t: ProjectivePoint, s: Scalar) -> Self {
         DLogProof { t, s }
