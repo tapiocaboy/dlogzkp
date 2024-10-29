@@ -127,3 +127,24 @@ The implementation uses the `log` crate with `env_logger` for configurable loggi
 
 This implementation is for educational purposes. While it implements the core cryptographic operations correctly, it has not been audited for production use.
 
+## Documentation
+
+### Generating Documentation
+
+To generate the documentation locally, run:
+
+```bash
+# Make the script executable
+chmod +x scripts/generate_docs.sh
+
+# Generate documentation
+./scripts/generate_docs.sh
+```
+
+The documentation will be generated in the `docs` directory. You can view it by opening `docs/index.html` in your browser.
+
+### Online Documentation
+
+The latest documentation is available online at:
+https://tapiocaboy.github.io/schnorr_zk_dlog/
+
