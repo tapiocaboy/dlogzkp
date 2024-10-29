@@ -1,1 +1,0 @@
-window.ALL_CRATES = ["schnorr_zk_dlog"];

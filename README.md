@@ -1,8 +1,6 @@
 # Schnorr Zero-Knowledge DLOG Proof
 
-[![Rust CI](https://github.com/<username>/schnorr_zk_dlog/actions/workflows/rust.yml/badge.svg)](https://github.com/<username>/schnorr_zk_dlog/actions/workflows/rust.yml)
-![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 A Rust implementation of the Non-interactive Schnorr Zero-Knowledge Discrete Logarithm (DLOG) Proof scheme with a Fiat-Shamir transformation.
 
@@ -142,9 +140,3 @@ chmod +x scripts/generate_docs.sh
 ```
 
 The documentation will be generated in the `docs` directory. You can view it by opening `docs/index.html` in your browser.
-
-### Online Documentation
-
-The latest documentation is available online at:
-https://tapiocaboy.github.io/schnorr_zk_dlog/
-
