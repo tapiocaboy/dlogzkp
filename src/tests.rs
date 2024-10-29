@@ -24,9 +24,14 @@ mod hash_points_tests {
         // The hash should be different for different session IDs.
         let pid = 1;
         let points = vec![ProjectivePoint::GENERATOR];
-        let hash1 = DLogProof::hash_points("session1", pid, &points).expect("Hash computation failed");
-        let hash2 = DLogProof::hash_points("session2", pid, &points).expect("Hash computation failed");
-        assert_ne!(hash1, hash2, "Different session IDs should produce different hashes");
+        let hash1 =
+            DLogProof::hash_points("session1", pid, &points).expect("Hash computation failed");
+        let hash2 =
+            DLogProof::hash_points("session2", pid, &points).expect("Hash computation failed");
+        assert_ne!(
+            hash1, hash2,
+            "Different session IDs should produce different hashes"
+        );
     }
 
     #[test]
@@ -37,7 +42,10 @@ mod hash_points_tests {
         let points = vec![ProjectivePoint::GENERATOR];
         let hash1 = DLogProof::hash_points(sid, 1, &points).expect("Hash computation failed");
         let hash2 = DLogProof::hash_points(sid, 2, &points).expect("Hash computation failed");
-        assert_ne!(hash1, hash2, "Different PIDs should produce different hashes");
+        assert_ne!(
+            hash1, hash2,
+            "Different PIDs should produce different hashes"
+        );
     }
 
     #[test]
@@ -48,7 +56,11 @@ mod hash_points_tests {
         let pid = 1;
         let points = vec![];
         let hash = DLogProof::hash_points(sid, pid, &points).expect("Hash computation failed");
-        assert_ne!(hash, Scalar::ZERO, "Hash of empty points list should not be zero");
+        assert_ne!(
+            hash,
+            Scalar::ZERO,
+            "Hash of empty points list should not be zero"
+        );
     }
 }
 
@@ -65,8 +77,11 @@ mod prove_verify_tests {
         let base_point = ProjectivePoint::GENERATOR;
         let y = base_point * x;
 
-        let proof = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
-        let result = proof.verify(sid, pid, &y, &base_point).expect("Verification failed");
+        let proof =
+            DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
+        let result = proof
+            .verify(sid, pid, &y, &base_point)
+            .expect("Verification failed");
         assert!(result, "Valid proof should verify");
     }
 
@@ -81,7 +96,8 @@ mod prove_verify_tests {
         let base_point = ProjectivePoint::GENERATOR;
         let y = base_point * x;
 
-        let proof = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
+        let proof =
+            DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
         let result = proof
             .verify(wrong_sid, pid, &y, &base_point)
             .expect("Verification failed");
@@ -99,7 +115,8 @@ mod prove_verify_tests {
         let base_point = ProjectivePoint::GENERATOR;
         let y = base_point * x;
 
-        let proof = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
+        let proof =
+            DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
         let result = proof
             .verify(sid, wrong_pid, &y, &base_point)
             .expect("Verification failed");
@@ -119,7 +136,8 @@ mod prove_verify_tests {
         // Create wrong public key by using different scalar
         let wrong_y = base_point * (x + Scalar::ONE);
 
-        let proof = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
+        let proof =
+            DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Proof generation failed");
         let result = proof
             .verify(sid, pid, &wrong_y, &base_point)
             .expect("Verification failed");
@@ -134,14 +152,23 @@ mod prove_verify_tests {
         let base_point = ProjectivePoint::GENERATOR;
         let y = base_point * x;
 
-        let proof1 = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("First proof generation failed");
-        let proof2 = DLogProof::prove(sid, pid, &x, &y, &base_point).expect("Second proof generation failed");
+        let proof1 =
+            DLogProof::prove(sid, pid, &x, &y, &base_point).expect("First proof generation failed");
+        let proof2 = DLogProof::prove(sid, pid, &x, &y, &base_point)
+            .expect("Second proof generation failed");
 
-        assert_ne!(proof1, proof2, "Different proofs for same secret should be different");
-        
-        let result1 = proof1.verify(sid, pid, &y, &base_point).expect("First verification failed");
-        let result2 = proof2.verify(sid, pid, &y, &base_point).expect("Second verification failed");
-        
+        assert_ne!(
+            proof1, proof2,
+            "Different proofs for same secret should be different"
+        );
+
+        let result1 = proof1
+            .verify(sid, pid, &y, &base_point)
+            .expect("First verification failed");
+        let result2 = proof2
+            .verify(sid, pid, &y, &base_point)
+            .expect("Second verification failed");
+
         assert!(result1, "First proof should verify");
         assert!(result2, "Second proof should verify");
     }

@@ -32,7 +32,6 @@ pub trait DiscreteLogProof {
     ) -> Result<bool, Error>;
 }
 
-
 /// Represents a Discrete Logarithm (DLOG) proof using the Schnorr protocol.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DLogProof {
@@ -63,12 +62,12 @@ impl DiscreteLogProof for DLogProof {
         let mut hasher = Sha256::new();
         hasher.update(sid.as_bytes());
         hasher.update(&pid.to_be_bytes());
-        
+
         for point in points {
             let encoded = point.to_affine().to_encoded_point(false);
             hasher.update(encoded.as_bytes());
         }
-        
+
         let digest = hasher.finalize();
         Scalar::from_repr(digest.into())
             .into_option()
@@ -106,10 +105,10 @@ impl DiscreteLogProof for DLogProof {
     ) -> Result<Self, Error> {
         let r = Scalar::random(&mut OsRng);
         let t = base_point * &r;
-        
+
         let c = Self::hash_points(sid, pid, &[*base_point, *y, t])?;
         let s = r + (c * x);
-        
+
         Ok(DLogProof { t, s })
     }
 

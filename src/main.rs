@@ -1,15 +1,11 @@
 use env_logger::Env;
-use k256::{
-    elliptic_curve::Field,
-    ProjectivePoint, Scalar,
-};
+use k256::{elliptic_curve::Field, ProjectivePoint, Scalar};
 use log::info;
 use rand_core::OsRng;
 use schnorr_zk_dlog::dlog::DLogProof;
 use schnorr_zk_dlog::dlog::DiscreteLogProof;
 #[cfg(test)]
 mod tests;
-
 
 /// Generates a random Scalar value.
 ///
